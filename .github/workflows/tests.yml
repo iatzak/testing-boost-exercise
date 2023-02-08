@@ -31,6 +31,8 @@ jobs:
       - name: "Build"
         working-directory: ./build
         run:  make
+      - name: "Tar build artifacts"
+        run: tar -cvf build.tar build
       - name: "Upload build as an artifact"
         uses: actions/upload-artifact@v3
         with:
