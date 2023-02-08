@@ -34,7 +34,7 @@ jobs:
       - name: "Upload build as an artifact"
         uses: actions/upload-artifact@v3
         with:
-          name: build-dir
+          name: build
           path: build.tar
           retention: 3 hours
   test:
@@ -46,7 +46,7 @@ jobs:
         run: sudo apt update && sudo apt-get install cmake libyaml-cpp-dev gcc libeigen3-dev libboost-test-dev
       - uses: actions/download-artifact@v3
         with:
-          name: build-dir
+          name: build
       - name: "Extract artifact with tar"
         run: tar -xf build.tar build
       - name: "Run tests"

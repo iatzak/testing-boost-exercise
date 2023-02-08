@@ -7,8 +7,8 @@ struct MatrixIOFixture {
   MatrixIOFixture()
   {
     ExpectedA = MatrixXd(3, 3);
-    ExpectedA << 1, 2, 3,
-        		4, 5, 6,
+    ExpectedA << 1, 2, 3
+        		4, 5, 6
         		7, 8, 9;
   }
 
@@ -28,4 +28,3 @@ BOOST_AUTO_TEST_CASE(openData)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
