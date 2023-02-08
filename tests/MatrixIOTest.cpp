@@ -7,9 +7,9 @@ struct MatrixIOFixture {
   MatrixIOFixture()
   {
     ExpectedA = MatrixXd(3, 3);
-    ExpectedA << 1, 2, 3
-        		4, 5, 6
-        		7, 8, 9;
+    ExpectedA << 1, 2, 3,
+	      4, 5, 6,
+	      7, 8, 9;
   }
 
   MatrixXd ExpectedA;
