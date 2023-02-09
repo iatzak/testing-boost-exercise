@@ -1,0 +1,56 @@
+name: Test and check C++ package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  style_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: "Install clang-format"
+        run: sudo apt update && sudo apt install clang-format
+      - name: "Run clang-format"
+        run: clang-format src/*.cpp src/*.hpp tests/*.cpp --dry-run -Werror
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: "Install dependencies"
+        run: sudo apt update && sudo apt-get install cmake libyaml-cpp-dev gcc libeigen3-dev libboost-test-dev
+      - name: "Create build folder"
+        run: mkdir build
+      - name: "Run cmake"
+        working-directory: ./build
+        run: cmake ..
+      - name: "Build"
+        working-directory: ./build
+        run:  make
+      - name: "Tar build artifacts"
+        run: tar -cvf build.tar build
+      - name: "Upload build as an artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build.tar
+          retention: 3 hours
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - name: "Install dependencies"
+        run: sudo apt update && sudo apt-get install cmake libyaml-cpp-dev gcc libeigen3-dev libboost-test-dev
+      - uses: actions/download-artifact@v3
+        with:
+          name: build
+      - name: "Extract artifact with tar"
+        run: tar -xf build.tar build
+      - name: "Run tests"
+        working-directory: ./build
+        run: make test
